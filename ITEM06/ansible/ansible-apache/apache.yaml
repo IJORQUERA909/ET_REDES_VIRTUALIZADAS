@@ -1,0 +1,15 @@
+---
+- hosts: webservers
+  become: yes
+  tareas:
+    - name: INSTALL APACHE2
+      apt: nombre=apache2 update_cache=yes state=latest
+ 
+    - name: ENABLED MOD_REWR
+      apache2_module: name=rewrite state=present
+      notify:
+        - RESTART APACHE2
+ 
+  handlers:
+    - name: RESTART APACHE2
+      servicio: nombre=apache2 state=reiniciado 

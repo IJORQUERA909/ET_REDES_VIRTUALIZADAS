@@ -1,0 +1,18 @@
+---
+- name: Respaldo de RUNNING-CONFIG
+  hosts: csr1kv
+  gather_facts: false
+  connection: local
+ 
+  tasks:
+    - name: Obtener la configuración running
+      ios_command:
+        commands: show running-config
+      register: running_config
+
+
+    - name: Guardar la configuración running en un archivo
+      copy:
+        content: "{{ running_config.stdout[0] }}"
+        dest: "./backups/{{ inventory_hostname }}.txt"
+
